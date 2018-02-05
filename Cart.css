@@ -1,0 +1,25 @@
+.cart{
+    display: flex;
+    display: -webkit-flex;
+    margin-left: 64px;
+    position: relative;
+    z-index: 99;
+    
+}
+
+.cart-items{
+    height: 320px;
+    width: 360px;
+}
+.cart-item{
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    padding: 8px;
+}
+.product-image{
+        width: 48px;
+        height: 48px;
+}
+
