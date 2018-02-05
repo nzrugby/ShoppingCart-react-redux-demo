@@ -6,7 +6,7 @@ This demo I used react-redux to rewrite the FruitCart. Both these demos work fin
 To rewrite the demo, I moved all the states from component to reducers. Also I move all the onXXX attributes(or functions) to reducers. I defined a unique action for every one of these functions. Then mapDispatchToPros to bind these actions and attributes. In this demo I split the reducers into server small reducers and then use combineReducers to get a whole Reducer to manger all the state tree.  
 
 
-# Get started
+
 How to use it?
   1. Download all the folders and files to a local folder(created by you. for examele: d:\js)
   
