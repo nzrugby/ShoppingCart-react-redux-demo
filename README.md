@@ -1,2 +1,26 @@
-# ShoppingCart-react-redux-demo
+# FruitCart react-redux demo
 A simple demo to show how to use react-redux to mange global state
+
+Last FruitCart demo just used React without redux and it works fine.
+This demo I used react-redux to rewrite the FruitCart. Both these demos work fine and produce the same results. 
+To rewrite the demo, I moved all the states from component to reducers. Also I move all the onXXX attributes(or functions) to reducers. I defined a unique action for every one of these functions. Then mapDispatchToPros to bind these actions and attributes. In this demo I split the reducers into server small reducers and then use combineReducers to get a whole Reducer to manger all the state tree.  
+
+
+# Get started
+
+Download all the folders and files to a local folder(created by you. for examele: d:\js)
+Use console to enter the folder you put all source files and folders.
+type command: 'npm init' to create package.json' (use default setting first)
+type command: 'npm install webpack --save-dev'
+type command: 'npm install webpack-dev-server --save-dev'
+type command: 'npm install babel-core babel-loader babel-preset-env babel-preset-react --save-dev'
+type command: 'npm install react react-dom --save-dev'
+type command: 'npm install style-loader css-loader --save-dev'
+After you finish all above steps you can run this app. Still in this app directory type 'npm start' first to pack the all the dependent files. Then run 'npm run server' to start the application. The only thing you need to be aware is webpack.config.js and package.json. After you download all the files you'd better backup these two files. For they might be modified when you install the following packages. Sometimes the different version may incur the problems.
+
+Because this demo mainly focuses on reac-redux, layout and CSS are not optimized. You can modify them to make the UI better. Also I used array and json object to simulate the data for simplicity. You can use json file or database to import the data.
+
+The following is snapshot of this demo. 
+
+
+![react1](https://user-images.githubusercontent.com/31294078/35784409-1bcd1474-0a7c-11e8-99f8-8a0c41de9c0f.jpg)
