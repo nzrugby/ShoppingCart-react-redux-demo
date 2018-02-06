@@ -5,12 +5,6 @@ import styles from '../Cart.css'
 class Cart extends Component{
     constructor(props){
         super(props);
-        /*
-        this.state={
-            showCart1: true,
-            cart:[],
-            viewChanged:false
-        }*/
     }
 
     handleClick(){
@@ -32,7 +26,6 @@ class Cart extends Component{
         let cartItems;
         const selProducts = this.props.selectProducts;
 
-        //const selProducts = this.props.selectProducts;
         const len = selProducts.length;
         let view;
         let totalPrice = 0;
@@ -66,16 +59,11 @@ class Cart extends Component{
             for(var i=0;i<cartItems.length;i++){
                 items.push(cartItems[i]);
             }
-            
             view = <div>
                     
                      <span>Total price is {totalPrice}</span>
                      <TransitionGroup transitionName="fadeIn" transitionEnterTimeout={1} transitionLeaveTimeout={1} component="ul" className="cart-items">{cartItems}</TransitionGroup>
                    </div>;
-
-            
-                  
-            
         }
         return(
         <div className="container" style={{"padding": "100px 50px 10px;"}} >
@@ -88,7 +76,6 @@ class Cart extends Component{
             </div>    
         </div>
         )
-        
     }
 }
 
