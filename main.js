@@ -6,7 +6,7 @@ import {Provider,connect} from 'react-redux'
 import {createStore} from 'redux'
 import {rootReducer} from './src/Reducer/reducer'
 
-let store = createStore(reducer)
+let store = createStore(rootReducer)
 const ShopCart = connect(mapStateToProps,mapDispatchToProps)(Shopping1)
 
 render(
