@@ -1,35 +1,44 @@
 import React,{Component} from 'react'
-import Picframe from './Picframe'
+import Picframe1 from './Picframe'
 import styles from '../General.css'
-
+import {connect} from 'react-redux'
+import {mapStateToPropsProductsContainer,mapDispatchToPropsProductsContainer} from './Reducer/reducer'
 
 class ProductsContainer extends Component{
-    constructor(props){
-        super(props);
-        
-    }
-
     render(){
-        //const arr = [{'path':'/images/apple.jpg','name':'apple','quantity':this.state.qty.apple},{'path':'/images/pear.jpg','name':'pear','quantity':this.state.qty.pear},{'path':'/images/watermelen.jpg','name':'watermelen','quantity':this.state.qty.watermelen},{'path':'/images/banana.jpg','name':'banana','quantity':this.state.qty.banana}];
-        if(this.props.products.length!=0){
-                return(
-                    <div className='col-md-10'>
-                    {
-                        this.props.products.map((item,index)=><Picframe addToCart={this.props.addCart} quantity={this.props.qty[index]} source={item.path} key={index} index1={index} name={item.name}/>)
-                    }
-                    </div>
-                )
-        }
-        else{
+        let {products,addClick,searchMode,searchResults} = this.props;
+        //normal display mode
+        if(!searchMode){
             return(
-                <div className='col-md-6'>
-                    Sorry, no product found!
+                <div className='col-md-10'>
+                {
+                    products.map((item)=><Picframe1 source={item.path} quantity={item.quantity} name={item.name} key={item.index} index1={item.index} onClick={()=>addClick(item.index)}/>)
+                }
                 </div>
             )
         }
-            
-        
+        //search mode
+        else{
+            if(searchResults.length!=0){
+                return(
+                    <div className='col-md-10'>
+                    {
+                        searchResults.map((item)=><Picframe1 source={item.path} quantity={item.quantity} name={item.name} key={item.index} index1={item.index} onClick={()=>addClick(item.index)}/>)
+                    }
+                    </div>
+                )
+            }
+            else{
+                return(
+                    <div className='col-md-6'>
+                        Sorry, no product found!
+                    </div>
+                )
+            }    
+        }
     }
 }
 
-export default ProductsContainer
+const ProductsContainer1 = connect(mapStateToPropsProductsContainer,mapDispatchToPropsProductsContainer)(ProductsContainer)
+
+export default ProductsContainer1
