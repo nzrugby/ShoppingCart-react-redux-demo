@@ -2,81 +2,52 @@ import React,{Component} from 'react'
 import { TransitionGroup } from 'react-transition-group'
 import EmptyCart from './EmptyCart'
 import styles from '../Cart.css'
+import {connect} from 'react-redux'
+import {mapStateToPropsCart, mapDispatchToPropsCart} from './Reducer/reducer'
+import CartItem from './CartItem'
 class Cart extends Component{
-    constructor(props){
-        super(props);
-    }
-
-    handleClick(){
-        //event.preventDefault();
-        setTimeout(()=>{this.setState({showCart1: !this.showCart1})},0)
-    }
-
-    handleRemove(product,index){
-        this.props.handleRemove(index);
-        setTimeout(() => {
-            this.setState({showCart1:!this.showCart1})
-        , 0.1});
-        setTimeout(() => {
-            this.setState({showCart1:!this.showCart1})
-        , 0.2});
-    }
-
     render(){
-        let cartItems;
-        const selProducts = this.props.selectProducts;
-
-        const len = selProducts.length;
+        const {selectProducts,cartClick,showCart1,clickRemove,dataChanged} = this.props;
+        
+        let cartItems=[];
         let view;
         let totalPrice = 0;
-        for(var i=0;i<this.props.qty.length;i++){
-            totalPrice += this.props.pModel[i].price * this.props.qty[i];
-        }
-        if(len==0)
-        {
-            view = <EmptyCart/>
-        }
-        else{
-            cartItems = this.props.qty.map((product,index) =>{
-                return(
-                    product>0?
-                    <li className="cart-item" key={this.props.pModel[index].name}>
-                        <img className="product-image" src={this.props.pModel[index].path} />
-                        <div>
-                            <p>{this.props.pModel[index].name}</p>
-                            <p>{this.props.pModel[index].price}</p>
-                            <p>Quantity:{product}</p>
-                            <p>Total Price:{product*this.props.pModel[index].price}</p>
-                        </div>
-                        <button onClick={this.clickRemove(index)}>Remove items</button>
-                        
-                    </li>
-                    :null
-                )
-            });
-            
-            let items = [];
-            for(var i=0;i<cartItems.length;i++){
-                items.push(cartItems[i]);
+        for(var i=0;i<selectProducts.length;i++){
+            if(selectProducts[i].quantity>0){
+                cartItems.push(selectProducts[i]);        
             }
-            view = <div>
-                    
-                     <span>Total price is {totalPrice}</span>
-                     <TransitionGroup transitionName="fadeIn" transitionEnterTimeout={1} transitionLeaveTimeout={1} component="ul" className="cart-items">{cartItems}</TransitionGroup>
-                   </div>;
         }
+       
+        view = cartItems.length==0? 
+                <EmptyCart/>:
+                cartItems.map(product=>
+                    <CartItem className="cart-item" 
+                            key={product.name} 
+                            image={product.path}
+                            title={product.name} 
+                            price={product.price}
+                            quantity={product.quantity}
+                            totalPrice={product.quantity*product.price}
+                            onRemove={()=>clickRemove(product.index)}/>
+                )
+
         return(
-        <div className="container" style={{"padding": "100px 50px 10px;"}} >
-            <button id="popbtn" type="button" className="btn btn-success" 
-                    onClick={this.cartClick}>
-                Your Cart
-            </button> 
-            <div>
-                {this.showCart1 ? "" : view}
-            </div>    
-        </div>
+            
+            <div className="container" style={{"padding": "100px 50px 10px;"}} >
+                <button id="popbtn" type="button" className="btn btn-success" 
+                        onClick={cartClick}>
+                    Your Cart
+                </button> 
+                <div>
+                    {showCart1 ? "" : view}
+                </div>   
+                
+            </div>
         )
+        
     }
 }
 
-export default Cart
+const Cart1 = connect(mapStateToPropsCart,mapDispatchToPropsCart)(Cart)
+
+export default Cart1
