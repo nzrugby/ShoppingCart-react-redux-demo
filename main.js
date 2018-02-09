@@ -4,14 +4,15 @@ import Shopping1 from './src/Shopping'
 import './General.css'
 import {Provider,connect} from 'react-redux'
 import {createStore} from 'redux'
-import {rootReducer} from './src/Reducer/reducer'
+import Cart from './src/Cart'
+import ProductsContainer from './src/ProductsContainer'
+import {rootReducer,mapStateToProps,mapDispatchToProps} from './src/Reducer/reducer'
 
 let store = createStore(rootReducer)
-const ShopCart = connect(mapStateToProps,mapDispatchToProps)(Shopping1)
 
 render(
     <Provider store={store}>
-        <Shopping1 />
+        <Shopping1/>
     </Provider>,
     document.getElementById('root')
 );
