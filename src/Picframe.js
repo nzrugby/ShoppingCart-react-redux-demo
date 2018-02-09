@@ -1,12 +1,11 @@
 import React,{Component} from 'react'
 import styles from '../General.css'
-
-class Picframe extends Component{
-
-    handleClick(){
-        this.props.addToCart(this.props.index1);
+import {connect} from 'react-redux'
+import {mapDispatchToPropsCart, mapDispatchToPropsPicframe,mapStateToPropsPicframe} from './Reducer/reducer'
+class Picframe1 extends Component{
+    constructor(props){
+        super(props);
     }
-
     
     render(){
         let popid = this.props.name + this.props.index1;
@@ -21,7 +20,7 @@ class Picframe extends Component{
                         <h5>Qty: {this.props.quantity}</h5>
                     </div>
                     <div>
-                        <button onClick={this.addClick(this.props.index1)} className='btn btn-success'><span>Add To Cart</span></button>
+                        <button onClick={this.props.onClick} className='btn btn-success'><span>Add To Cart</span></button>
                     </div>
                     
                 </div>
@@ -38,4 +37,6 @@ class Picframe extends Component{
     }
 }
 
-export default Picframe
+//const Picframe1 = connect(mapStateToPropsPicframe,mapDispatchToPropsPicframe)(Picframe);
+
+export default Picframe1
