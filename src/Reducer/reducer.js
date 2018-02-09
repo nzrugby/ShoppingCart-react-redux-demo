@@ -1,10 +1,10 @@
 import { combineReducers } from '../../../app4-redux/node_modules/redux';
-
+import {connect} from 'react-redux'
 function clickSearch(index){
     var search = document.getElementById('search').value;
     return{
         type:'SEARCH',
-        index:search
+        input:search
     }
 }
 
@@ -15,7 +15,7 @@ function clickAddItem(index){
     }
 }
 
-function clickRemoveItems(){
+function clickRemoveItems(index){
     return{
         type:'REMOVE_ITEMS',
         index:index
@@ -34,123 +34,128 @@ function clickCart(){
     }
 }
 
-export function mapStateToProps(state,action){
+export function mapStateToPropsProductsContainer(state){
     return{
-        qty:state.addOrRemoveItemReducer.qty,
-        selectProducts:state.addOrRemoveItemReducer.selectProducts,
-        selectQty:state.addOrRemoveItemReducer.selectQty,
-        filterProducts:state.searchReducer.filterProducts,
-        
+        products:state.addOrRemoveItemReducer.products,
+        searchResults:state.addOrRemoveItemReducer.searchResults,
+        searchMode:state.addOrRemoveItemReducer.searchMode
+    }
+}
+                
+export function mapDispatchToPropsProductsContainer(dispatch){
+    return{
+        addClick:(index)=>dispatch(clickAddItem(index)),
+        searchClick:(text)=>dispatch(clickSearch(text)),
     }
 }
 
-export function mapDispatchToProps(dispatch){
+export function mapStateToPropsCart(state){
     return{
-        addClick:(index)=>dispatch(clickAddItem(index)),
-        removeClick:(index)=>dispatch(clickRemoveItems(index)),
-        searchClick:(text)=>dispatch(clickSearch(text)),
+        selectProducts:state.addOrRemoveItemReducer.selectProducts,
+        showCart1:state.addOrRemoveItemReducer.ShowCart1,
+        dataChanged:state.addOrRemoveItemReducer.dataChanged
+    }
+}
+
+export function mapDispatchToPropsCart(dispatch){
+    return{
+        clickRemove:(index)=>dispatch(clickRemoveItems(index)),
         cartClick:()=>dispatch(clickCart())
     }
 }
 
-//clickCart
-let initialState0 = {ShowCart1:false}
-function clickCartReducer(state=initialstate0,action){
-    switch(action.type){
-        case 'CART':
-            return{ShowCart1:!state.ShowCart1}
-        default:
-            return state;    
-    }
-}
-
-
-//clickSearch 
-let initialstate1 = {filterProducts:[{'index':'0','path':'/images/apple.jpg','name':'apple','price':'4.99'},{'index':'1','path':'/images/pear.jpg','name':'pear','price':'3.59'},{'index':'2','path':'/images/watermelen.jpg','name':'watermelen','price':'6.99'},{'index':'3','path':'/images/banana.jpg','name':'banana','price':'2.99'}]}; 
-function searchReducer(state=initialstate1,action){
-    switch(action.type){
-        case 'SEARCH':
-            const productsModel=[{'index':'0','path':'/images/apple.jpg','name':'apple'},{'index':'1','path':'/images/pear.jpg','name':'pear'},{'index':'2','path':'/images/watermelen.jpg','name':'watermelen'},{'index':'3','path':'/images/banana.jpg','name':'banana'}];    
-            let finditem = false;
-            if(action.input==""){
-                return {filterProducts:productsModel};
-            }
-            else{
-                let tmpProducts = [];
-                for(var i=0;i<productsModel.length;i++){
-                    if(productsModel[i].name == itemName){
-                        
-                        tmpProducts.push(productsModel[i]);
-                        finditem = true;
-                        break;
-                    }
-                }
-                return {filterProducts:tmpProducts};
-            }
-        default:
-            return state;
-    }
-}
-
-
-let initialState2 = {qty:[10,8,15,5],selectQty:[0,0,0,0],selectProducts:[]}
+let initialState2 = {
+                    ShowCart1:true,
+                    dataChanged:false,
+                    searchMode:false,
+                    searchResults:[],
+                    selectProducts:[{'index':'0','path':'/images/apple.jpg','name':'apple','price':'4.99',"quantity":0},{'index':'1','path':'/images/pear.jpg','name':'pear','price':'3.59',"quantity":0},{'index':'2','path':'/images/watermelen.jpg','name':'watermelen','price':'6.99',"quantity":0},{'index':'3','path':'/images/banana.jpg','name':'banana','price':'2.99',"quantity":0}],
+                    products:[{'index':'0','path':'/images/apple.jpg','name':'apple','price':'4.99',"quantity":10},{'index':'1','path':'/images/pear.jpg','name':'pear','price':'3.59',"quantity":8},{'index':'2','path':'/images/watermelen.jpg','name':'watermelen','price':'6.99',"quantity":15},{'index':'3','path':'/images/banana.jpg','name':'banana','price':'2.99',"quantity":5}]}
 //clickAddItem
 function addOrRemoveItemReducer(state=initialState2,action){
-    products:[{'index':'0','path':'/images/apple.jpg','name':'apple','price':'4.99',"quantity":10},{'index':'1','path':'/images/pear.jpg','name':'pear','price':'3.59',"quantity":8},{'index':'2','path':'/images/watermelen.jpg','name':'watermelen','price':'6.99',"quantity":15},{'index':'3','path':'/images/banana.jpg','name':'banana','price':'2.99',"quantity":5}];
+    
+    
     switch(action.type){
         case 'ADD_ITEM':
-            let currentQty = state.qty;
-            let selQty = state.selectQty;
-            if(currentQty[parseInt(index)]>0){
-                currentQty[parseInt(index)]--;
-                selQty[parseInt(index)]++;
+            let n = parseInt(action.index);
+            //Here deepclone must be used. Otherwise this reducer is not pure.
+            let productsCopy = JSON.parse(JSON.stringify(state.products))
+            let selProductsCopy = JSON.parse(JSON.stringify(state.selectProducts))
+            let searchResultsCopy = JSON.parse(JSON.stringify(state.searchResults))
+            
+            if(productsCopy[n].quantity>0){
+                productsCopy[n].quantity--;
+                selProductsCopy[n].quantity++;
+                if(state.searchMode){
+                    searchResultsCopy[0].quantity--;
+                }
             }
             else{
                 alert("Sorry,out of stock.")
             }
-
-            let cart = state.selectProducts;
-            var item = products[parseInt(index)];
-            cart.push(item.name);
-            return{
-                selectProducts:cart,selectQty:selQty,qty:currentQty
-            }
+            
+            return  {
+                    ShowCart1:state.ShowCart1,
+                    selectProducts:selProductsCopy,
+                    products:productsCopy,
+                    searchMode:state.searchMode,
+                    searchResults:searchResultsCopy,
+                    dataChanged:state.dataChanged
+                }
         
         case 'REMOVE_ITEMS':
             const originalQty = [10,8,15,5];
-            const productsModel=[{'name':'apple'},{'name':'pear'},{'name':'watermelen'},{'name':'banana'}];    
-            const selProducts = state.selectProducts;
-            const pname=productsModel[action.index].name;
-            for(var i=0;i<selProducts.length;i++){
-                var index = selProducts.indexOf(pname);
-                if (index > -1) {
-                    selProducts.splice(index, 1);
+            let productsCopy1 = JSON.parse(JSON.stringify(state.products))
+            let selProductsCopy1 = JSON.parse(JSON.stringify(state.selectProducts))
+            let searchResultsCopy1 = JSON.parse(JSON.stringify(state.searchResults))
+            const pname=selProductsCopy1[action.index].name;
+            selProductsCopy1[action.index].quantity=0;
+            productsCopy1[action.index].quantity = originalQty[action.index];
+            if(state.searchMode){
+                searchResultsCopy1[0].quantity = originalQty[action.index];
+            }   
+            
+            return {
+                ShowCart1:state.ShowCart1,
+                selectProducts:selProductsCopy1,
+                searchResults:searchResultsCopy1,
+                products:productsCopy1,
+                searchMode:state.searchMode,
+                dataChanged:true
+            }   
+            
+        case 'SEARCH':
+            let finditem = false;
+            if(action.input==""){
+                return {
+                    ShowCart1:state.ShowCart1,dataChanged:state.dataChanged,searchMode:false,searchResults:[],selectProducts:state.selectProducts,products:state.products
                 }
             }
-            selQty = state.selectQty;
-            selQty[action.index] = 0;
-            let tmpQty = state.qty;
-            tmpQty[action.index] = originalQty[action.index];
-            return {
-                selectProducts:selProducts,selectQty:selQty,qty:tmpQty
-            }    
+            else{
+                let tmpProducts = [];
+                for(var i=0;i<state.products.length;i++){
+                    if(state.products[i].name == action.input){
+                        let pcopy = JSON.parse(JSON.stringify(state.products[i]));
+                        tmpProducts.push(pcopy);
+                        finditem = true;
+                        break;
+                    }
+                }
+                return {
+                    ShowCart1:state.ShowCart1,dataChanged:state.dataChanged,searchMode:true,searchResults:tmpProducts,qty:state.qty,selectQty:state.selectQty,selectProducts:state.selectProducts,products:state.products,dataChanged:state.dataChanged
+                }
+            }
+        case 'CART':
+            return{ShowCart1:!state.ShowCart1,dataChanged:false,searchMode:state.searchMode,searchResults:state.searchResults,selectProducts:state.selectProducts,products:state.products,dataChanged:state.dataChanged}    
         default:
             return state;
     }
 
 }
 
-//clickPreview
-function previewReducer(state,action){
-    switch(action.type){
-        case 'PREVIEW':
-            return state
-        default:
-            return state;
-    }
-}
 
-export const rootReducer = combineReducers({clickCartReducer,searchReducer,addOrRemoveItemReducer,previewReducer})
+export const rootReducer = combineReducers({addOrRemoveItemReducer})
 
- 
+
+
 
