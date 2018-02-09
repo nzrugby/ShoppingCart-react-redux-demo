@@ -12,24 +12,20 @@ class Shopping extends Component{
                 <div className='row'>
                     <div className='col-md-2'></div>
                     <div className='col-md-8'>
-                        
-                            <h1 style={{'color':'green','margin-left':'12%'}}>Welcome To ReactFruit Cart</h1>
-                            <div className='row'>
-                                <div className='col-md-10'>
-                                    <Search1/>
-                                    <hr/>
-                                    <ProductsContainer1/>
-                                </div>
-                                <div className='col-md-1'>
-                                    <Cart1/>
-                                </div>
+                        <h1 style={{'color':'green','margin-left':'12%'}}>Welcome To ReactFruit Cart</h1>
+                        <div className='row'>
+                            <div className='col-md-10'>
+                                <Search1/>
+                                <hr/>
+                                <ProductsContainer1/>
                             </div>
-                            
+                            <div className='col-md-1'>
+                                <Cart1/>
+                            </div>
+                        </div>
                     </div>
-                    
                 </div>
             </div>
-            
         )
     }
 }
