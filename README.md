@@ -30,4 +30,4 @@ Because this demo mainly focuses on React components and their communications, l
 
 The following is snapshot of this demo. 
 
-![react1](https://user-images.githubusercontent.com/31294078/35784409-1bcd1474-0a7c-11e8-99f8-8a0c41de9c0f.jpg)
+![1](https://user-images.githubusercontent.com/31294078/36070100-0335ecf6-0f59-11e8-9eb5-c65b48472018.gif)
